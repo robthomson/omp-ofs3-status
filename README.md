@@ -1,17 +1,9 @@
-**RF2STATUS**
+**OFS3STATUS**
 
 <img src="https://raw.githubusercontent.com/robthomson/omp-ofs3-status/refs/heads/main/git/status.png" width="800" alt="MAIN PAGE">
 
-RF2STATUS is a widget that has been designed to run on Frsky Radios; directly supporting and displaying all the key telemetry that is provided by Rotorflight.
 
-Fully supported is:
-
-- FPORT
-- S.PORT
-- ELRS
-- CROSSFIRE
-- ROTORFLIGHT TELEMETRY LUA
-
+OFS3STATUS is a port of the rotorflight flight status tool, setup to work on the omp hobby ofs3 fbl.
 ---
 
 
