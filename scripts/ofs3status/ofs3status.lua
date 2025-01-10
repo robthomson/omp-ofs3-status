@@ -107,7 +107,7 @@ ofs3status.lowvoltagStickParam = nil
 ofs3status.lowvoltagStickCutoffParam = nil
 ofs3status.lowvoltagStickCutoffParam = 80
 ofs3status.lowfuelParam = 20
-ofs3status.alertintParam = 5
+ofs3status.alertintParam = 1
 ofs3status.alrthptcParam = 1
 ofs3status.maxminParam = true
 ofs3status.titleParam = true
@@ -214,8 +214,8 @@ ofs3status.currentNoiseQ = 100
 ofs3status.i8n = assert(loadfile("i8n/" .. system.getLocale() .. ".lua"))()
 ofs3status.layoutOptions = {
     {ofs3status.i8n.TIMER, 1}, {ofs3status.i8n.VOLTAGE, 2}, {ofs3status.i8n.FUEL, 3}, {ofs3status.i8n.CURRENT, 4}, {ofs3status.i8n.MAH, 17}, {ofs3status.i8n.RPM, 5}, {ofs3status.i8n.LQ, 6},
-    {ofs3status.i8n.TESC, 7}, {ofs3status.i8n.TMCU, 8}, {ofs3status.i8n.IMAGE, 9}, {ofs3status.i8n.GOVERNOR, 10}, {ofs3status.i8n.IMAGEGOVERNOR, 11}, {ofs3status.i8n.LQTIMER, 12},
-    {ofs3status.i8n.TESCTMCU, 13}, {ofs3status.i8n.VOLTAGEFUEL, 14}, {ofs3status.i8n.VOLTAGECURRENT, 15}, {ofs3status.i8n.VOLTAGEMAH, 16}, {ofs3status.i8n.LQTIMERTESCTMCU, 20},
+    {ofs3status.i8n.IMAGE, 9}, {ofs3status.i8n.GOVERNOR, 10}, {ofs3status.i8n.IMAGEGOVERNOR, 11}, {ofs3status.i8n.LQTIMER, 12},
+    {ofs3status.i8n.VOLTAGEFUEL, 14}, {ofs3status.i8n.VOLTAGECURRENT, 15}, {ofs3status.i8n.VOLTAGEMAH, 16},
     {ofs3status.i8n.MAXCURRENT, 21}, {ofs3status.i8n.LQGOVERNOR, 22}
 }
 ofs3status.layoutBox1Param = 11 -- IMAGE, GOV
@@ -312,8 +312,8 @@ function ofs3status.create(widget)
     ofs3status.gfx_close = lcd.loadBitmap("gfx/close.png")
     ofs3status.rssiSensor = ofs3status.getRssiSensor()
 
-    if tonumber(ofs3status.sensorMakeNumber(environment.version)) < 159 then
-        ofs3status.screenError("ETHOS < V1.5.9")
+    if tonumber(ofs3status.sensorMakeNumber(environment.version)) < 160 then
+        ofs3status.screenError("ETHOS < V1.6.0")
         return
     end
 
@@ -547,20 +547,6 @@ function ofs3status.configure(widget)
         ofs3status.switchrescueoffParam = value
     end)
 
-    line = switchpanel:addLine(ofs3status.i8n.BBLenabled)
-    form.addSwitchField(line, nil, function()
-        return ofs3status.switchbblonParam
-    end, function(value)
-        ofs3status.switchbblonParam = value
-    end)
-
-    line = switchpanel:addLine(ofs3status.i8n.BBLdisabled)
-    form.addSwitchField(line, nil, function()
-        return ofs3status.switchbbloffParam
-    end, function(value)
-        ofs3status.switchbbloffParam = value
-    end)
-
     announcementpanel = form.addExpansionPanel(ofs3status.i8n.Telemetryannouncements)
     announcementpanel:open(false)
 
@@ -612,111 +598,7 @@ function ofs3status.configure(widget)
         ofs3status.announcementESCSwitchParam = value
     end)
 
-    -- announcement MCU READING
-    line = announcementpanel:addLine(ofs3status.i8n.Mcutemperature)
-    form.addSwitchField(line, form.getFieldSlots(line)[0], function()
-        return ofs3status.announcementMCUSwitchParam
-    end, function(value)
-        ofs3status.announcementMCUSwitchParam = value
-    end)
 
-    -- announcement TIMER READING
-    line = announcementpanel:addLine(ofs3status.i8n.Timer)
-    form.addSwitchField(line, form.getFieldSlots(line)[0], function()
-        return ofs3status.announcementTimerSwitchParam
-    end, function(value)
-        ofs3status.announcementTimerSwitchParam = value
-    end)
-
-    govalertpanel = form.addExpansionPanel(ofs3status.i8n.Governorannouncements)
-    govalertpanel:open(false)
-
-    -- TITLE DISPLAY
-    line = govalertpanel:addLine("  " .. ofs3status.i8n.OFF)
-    form.addBooleanField(line, nil, function()
-        return ofs3status.governorOFFParam
-    end, function(newValue)
-        ofs3status.governorOFFParam = newValue
-    end)
-
-    -- TITLE DISPLAY
-    line = govalertpanel:addLine("  " .. ofs3status.i8n.IDLE)
-    form.addBooleanField(line, nil, function()
-        return ofs3status.governorIDLEParam
-    end, function(newValue)
-        ofs3status.governorIDLEParam = newValue
-    end)
-
-    -- TITLE DISPLAY
-    line = govalertpanel:addLine("  " .. ofs3status.i8n.SPOOLUP)
-    form.addBooleanField(line, nil, function()
-        return ofs3status.governorSPOOLUPParam
-    end, function(newValue)
-        ofs3status.governorSPOOLUPParam = newValue
-    end)
-
-    line = govalertpanel:addLine("  " .. ofs3status.i8n.RECOVERY)
-    form.addBooleanField(line, nil, function()
-        return ofs3status.governorRECOVERYParam
-    end, function(newValue)
-        ofs3status.governorRECOVERYParam = newValue
-    end)
-
-    line = govalertpanel:addLine("  " .. ofs3status.i8n.ACTIVE)
-    form.addBooleanField(line, nil, function()
-        return ofs3status.governorACTIVEParam
-    end, function(newValue)
-        ofs3status.governorACTIVEParam = newValue
-    end)
-
-    line = govalertpanel:addLine("  " .. ofs3status.i8n.THROFF)
-    form.addBooleanField(line, nil, function()
-        return ofs3status.governorTHROFFParam
-    end, function(newValue)
-        ofs3status.governorTHROFFParam = newValue
-    end)
-
-    line = govalertpanel:addLine("  " .. ofs3status.i8n.LOSTHS)
-    form.addBooleanField(line, nil, function()
-        return ofs3status.governorLOSTHSParam
-    end, function(newValue)
-        ofs3status.governorLOSTHSParam = newValue
-    end)
-
-    line = govalertpanel:addLine("  " .. ofs3status.i8n.AUTOROT)
-    form.addBooleanField(line, nil, function()
-        return ofs3status.governorAUTOROTParam
-    end, function(newValue)
-        ofs3status.governorAUTOROTParam = newValue
-    end)
-
-    line = govalertpanel:addLine("  " .. ofs3status.i8n.BAILOUT)
-    form.addBooleanField(line, nil, function()
-        return ofs3status.governorBAILOUTParam
-    end, function(newValue)
-        ofs3status.governorBAILOUTParam = newValue
-    end)
-
-    line = govalertpanel:addLine("  " .. ofs3status.i8n.DISABLED)
-    form.addBooleanField(line, nil, function()
-        return ofs3status.governorDISABLEDParam
-    end, function(newValue)
-        ofs3status.governorDISABLEDParam = newValue
-    end)
-
-    line = govalertpanel:addLine("  " .. ofs3status.i8n.DISARMED)
-    form.addBooleanField(line, nil, function()
-        return ofs3status.governorDISARMEDParam
-    end, function(newValue)
-        ofs3status.governorDISARMEDParam = newValue
-    end)
-
-    line = govalertpanel:addLine("   " .. ofs3status.i8n.UNKNOWN)
-    form.addBooleanField(line, nil, function()
-        return ofs3status.governorUNKNOWNParam
-    end, function(newValue)
-        ofs3status.governorUNKNOWNParam = newValue
-    end)
 
     displaypanel = form.addExpansionPanel(ofs3status.i8n.Customisedisplay)
     displaypanel:open(false)
@@ -791,28 +673,6 @@ function ofs3status.configure(widget)
     advpanel = form.addExpansionPanel(ofs3status.i8n.Advanced)
     advpanel:open(false)
 
-  --  line = advpanel:addLine(ofs3status.i8n.Governor)
-  --  extgov = form.addChoiceField(line, nil, {{ofs3status.i8n.RFGovernor, 0}, {ofs3status.i8n.ExternalGovernor, 1}}, function()
-  --      return ofs3status.govmodeParam
-  --  end, function(newValue)
-  --      ofs3status.govmodeParam = newValue
-  --  end)
-
-    line = form.addLine(ofs3status.i8n.Temperatureconversion, advpanel)
-
-    line = advpanel:addLine("    " .. ofs3status.i8n.ESC)
-    form.addChoiceField(line, nil, {{ofs3status.i8n.Disable, 1}, {"°C -> °F", 2}, {"°F -> °C", 3}}, function()
-        return ofs3status.tempconvertParamESC
-    end, function(newValue)
-        ofs3status.tempconvertParamESC = newValue
-    end)
-
-    line = advpanel:addLine("   " .. ofs3status.i8n.MCU)
-    form.addChoiceField(line, nil, {{ofs3status.i8n.Disable, 1}, {"°C -> °F", 2}, {"°F -> °C", 3}}, function()
-        return ofs3status.tempconvertParamMCU
-    end, function(newValue)
-        ofs3status.tempconvertParamMCU = newValue
-    end)
 
     line = form.addLine(ofs3status.i8n.Voltage, advpanel)
 
@@ -1034,7 +894,7 @@ function ofs3status.getThemeInfo()
     -- first one is unsporrted
 
     if environment.board == "XES" or environment.board == "XE" or environment.board == "X20" or environment.board == "X20S" or environment.board == "X20PRO" or environment.board == "X20PROAW" or
-        environment.board == "X20R" or environment.board == "X20RS" then
+        environment.board == "X20R" or environment.board == "X20RS" or environment.board == "X18RS" then
         ret = {
             supportedRADIO = true,
             colSpacing = 4,
@@ -1062,8 +922,8 @@ function ofs3status.getThemeInfo()
             logsCOL3w = 120,
             logsCOL4w = 170,
             logsCOL5w = 110,
-            logsCOL6w = 90,
-            logsCOL7w = 90,
+            logsCOL6w = 0,
+            logsCOL7w = 0,
             logsHeaderOffset = 5
 
         }
@@ -1098,7 +958,7 @@ function ofs3status.getThemeInfo()
             logsCOL4w = 140,
             logsCOL5w = 0,
             logsCOL6w = 0,
-            logsCOL7w = 75,
+            logsCOL7w = 05,
             logsHeaderOffset = 5
         }
     end
@@ -1132,7 +992,7 @@ function ofs3status.getThemeInfo()
             logsCOL4w = 170,
             logsCOL5w = 0,
             logsCOL6w = 0,
-            logsCOL7w = 120,
+            logsCOL7w = 0,
             logsHeaderOffset = 5
         }
     end
@@ -1166,7 +1026,7 @@ function ofs3status.getThemeInfo()
             logsCOL4w = 140,
             logsCOL5w = 0,
             logsCOL6w = 0,
-            logsCOL7w = 75,
+            logsCOL7w = 0,
             logsHeaderOffset = 5
         }
     end
@@ -1194,13 +1054,13 @@ function ofs3status.getThemeInfo()
             fontTITLE = FONT_XS,
             fontPopupTitle = FONT_S,
             widgetTitleOffset = 20,
-            logsCOL1w = 50,
-            logsCOL2w = 100,
-            logsCOL3w = 100,
-            logsCOL4w = 140,
+            logsCOL1w = 70,
+            logsCOL2w = 110,
+            logsCOL3w = 110,
+            logsCOL4w = 150,
             logsCOL5w = 0,
             logsCOL6w = 0,
-            logsCOL7w = 75,
+            logsCOL7w = 0,
             logsHeaderOffset = 5
         }
     end
@@ -1825,7 +1685,7 @@ function ofs3status.paint(widget)
         end
 
         -- widget size
-        if environment.board == "V20" or environment.board == "XES" or environment.board == "X20" or environment.board == "X20S" or environment.board == "X20PRO" or environment.board == "X20PROAW" then
+        if environment.board == "V20" or environment.board == "XES" or environment.board == "X18RS" or environment.board == "X20" or environment.board == "X20S" or environment.board == "X20PRO" or environment.board == "X20PROAW" then
             if w ~= 784 and h ~= 294 then
                 ofs3status.screenError(ofs3status.i8n.DISPLAYSIZEINVALID)
                 return
@@ -4542,25 +4402,6 @@ function ofs3status.wakeupUI(widget)
                     ofs3status.switchstatus.rescueoff = false
                 end
 
-                -- BBL
-                if ofs3status.switchbblonParam ~= nil and ofs3status.switchbblonParam:state() == true then
-                    if ofs3status.switchstatus.bblon == nil or ofs3status.switchstatus.bblon == false then
-                        system.playFile("sounds/switches/bbl-on.wav")
-                        ofs3status.switchstatus.bblon = true
-                        ofs3status.switchstatus.bbloff = false
-                    end
-                else
-                    ofs3status.switchstatus.bblon = false
-                end
-                if ofs3status.switchbbloffParam ~= nil and ofs3status.switchbbloffParam:state() == true then
-                    if ofs3status.switchstatus.bbloff == nil or ofs3status.switchstatus.bbloff == false then
-                        system.playFile("sounds/switches/bbl-off.wav")
-                        ofs3status.switchstatus.bblon = false
-                        ofs3status.switchstatus.bbloff = true
-                    end
-                else
-                    ofs3status.switchstatus.bbloff = false
-                end
 
             end
 			
