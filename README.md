@@ -3,9 +3,9 @@
 <img src="https://raw.githubusercontent.com/robthomson/omp-ofs3-status/refs/heads/main/git/status.png" width="800" alt="MAIN PAGE">
 
 
-OFS3STATUS is a port of the rotorflight flight status tool, setup to work on the omp hobby ofs3 fbl.
 ---
 
+OFS3STATUS is a port of the rotorflight flight status tool, setup to work on the omp hobby ofs3 fbl.
 
 
 Like what you see.  Consider donating..
