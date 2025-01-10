@@ -1,6 +1,6 @@
 **RF2STATUS**
 
-<img src="https://github.com/robthomson/omp-osf3-status/blob/main/git/status.png?raw=true" width="800" alt="MAIN PAGE">
+<img src="https://github.com/robthomson/omp-ofs3-status/blob/main/git/status.png?raw=true" width="800" alt="MAIN PAGE">
 
 RF2STATUS is a widget that has been designed to run on Frsky Radios; directly supporting and displaying all the key telemetry that is provided by Rotorflight.
 
