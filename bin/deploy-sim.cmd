@@ -7,8 +7,8 @@ if not "%fileext%"==".lua" (
     echo No file extension specified or unsupported parameter. Proceeding with default behavior.
 )
 
-set tgt=osf3status
-set srcfolder=%DEV_OSF3_GIT_SRC%
+set tgt=ofs3status
+set srcfolder=%DEV_OFS3_GIT_SRC%
 set dstfolder=%DEV_SIM_SRC%
 
 REM Preserve the logs folder by moving it temporarily
