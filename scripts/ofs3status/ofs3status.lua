@@ -2853,7 +2853,7 @@ function ofs3status.getSensors()
             else
                 -- LEGACY CRSF REUSE
                 voltageSOURCE = system.getSource("Rx Batt")
-                rpmSOURCE = system.getSource("GPS Alt")
+                rpmSOURCE = system.getSource("GPS alt")
                 currentSOURCE = system.getSource("Rx Curr")
                 temp_escSOURCE = system.getSource("GPS Speed")
                 temp_mcuSOURCE = system.getSource("GPS Sats")
